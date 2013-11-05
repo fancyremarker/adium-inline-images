@@ -55,10 +55,10 @@ function revertImage(e) {
 }
 
 
-function handleLink(e) {
+function handleLink(target) {
     var srv,
         matches,
-        href = e.target.href;
+        href = target.href;
 
     for (var i = 0; i < IMAGE_SERVICES.length; i++) {
         srv = IMAGE_SERVICES[i];
@@ -67,17 +67,18 @@ function handleLink(e) {
             href.match(srv.test);
 
         if (matches) {
-            e.preventDefault();
-            e.stopPropagation();
-            inlineImage(e.target, srv.link ? srv.link(href) : href);
+            inlineImage(target, srv.link ? srv.link(href) : href);
             return;
         }
     }
 }
 
-document.getElementById('Chat').addEventListener('click', function(e) {
-    if (e.target.tagName !== 'A' ||
-        e.metaKey || e.altKey || e.ctrlKey || e.shiftKey)
-        return;
-    handleLink(e);
+
+document.getElementById('Chat').addEventListener('DOMNodeInserted', function(e) {
+    var anchors = e.target.getElementsByTagName("a");
+
+    for(var i = 0; i < anchors.length; i++) {
+        var anchor = anchors.item(i);
+        handleLink(anchor);
+    }
 });
