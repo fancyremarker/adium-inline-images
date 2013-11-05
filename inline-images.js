@@ -9,8 +9,9 @@ var IMAGE_SERVICES = [
             xmlHttp.open( 'GET', href, false );
             xmlHttp.send( null );
             var response = xmlHttp.responseText;
-            if (response.indexOf('preview-photo') != -1)
-                return response.split('class="chat-bubble freshdropdown-menu"><ul><li><a href="')[1].split('" id="download_button_link"')[0];
+            var linkRegex = /\<a href="([^"]+)" id="default_content_download_button"/;
+            if (response.match(linkRegex))
+                return response.match(linkRegex)[1];
             else
                 return null;
         }
@@ -41,8 +42,9 @@ var IMAGE_SERVICES = [
             xmlHttp.open('GET', href, false);
             xmlHttp.send(null);
             var response = xmlHttp.responseText;
-            if (response.indexOf('<body id="image">') != -1)
-                return response.split(' class="embed" href="')[1].split('">Direct link</a>')[0];
+            var linkRegex = /property="og:image" content="([^"]+)"/;
+            if (response.match(linkRegex))
+                return response.match(linkRegex)[1];
             else
                 return null;
         }
