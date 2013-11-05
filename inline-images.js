@@ -2,6 +2,19 @@
 // under terms of ISC License
 
 var IMAGE_SERVICES = [
+    {
+        test: new RegExp('^https?://www.dropbox.com/.*(png|jpg|jpeg|gif)$', 'i'),
+        link: function(href) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( 'GET', href, false );
+            xmlHttp.send( null );
+            var response = xmlHttp.responseText;
+            if (response.indexOf('preview-photo') != -1)
+                return response.split('class="chat-bubble freshdropdown-menu"><ul><li><a href="')[1].split('" id="download_button_link"')[0];
+            else
+                return null;
+        }
+    },
     {test: /\.(png|jpg|jpeg|gif)$/i},
     {test: new RegExp('^https://i.chzbgr.com/')},
     {test: new RegExp('^http://img-fotki.yandex.ru/get/')},
@@ -19,6 +32,19 @@ var IMAGE_SERVICES = [
         test: new RegExp('^http://imgur.com/.[^/]', 'i'),
         link: function(href) {
             return href.replace('imgur.com', 'i.imgur.com') + '.jpg';
+        }
+    },
+    {
+        test: new RegExp('^http://cl.ly/', 'i'),
+        link: function(href) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open('GET', href, false);
+            xmlHttp.send(null);
+            var response = xmlHttp.responseText;
+            if (response.indexOf('<body id="image">') != -1)
+                return response.split(' class="embed" href="')[1].split('">Direct link</a>')[0];
+            else
+                return null;
         }
     }
 ];
