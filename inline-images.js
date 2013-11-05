@@ -81,10 +81,10 @@ function revertImage(e) {
 }
 
 
-function handleLink(target) {
+function handleLink(e, anchor) {
     var srv,
         matches,
-        href = target.href;
+        href = anchor.href;
 
     for (var i = 0; i < IMAGE_SERVICES.length; i++) {
         srv = IMAGE_SERVICES[i];
@@ -93,11 +93,22 @@ function handleLink(target) {
             href.match(srv.test);
 
         if (matches) {
-            inlineImage(target, srv.link ? srv.link(href) : href);
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            inlineImage(anchor, srv.link ? srv.link(href) : href);
             return;
         }
     }
 }
+
+document.getElementById('Chat').addEventListener('click', function(e) {
+    if (e.target.tagName !== 'A' ||
+        e.metaKey || e.altKey || e.ctrlKey || e.shiftKey)
+        return;
+    handleLink(e, e.target);
+});
 
 
 document.getElementById('Chat').addEventListener('DOMNodeInserted', function(e) {
@@ -105,6 +116,6 @@ document.getElementById('Chat').addEventListener('DOMNodeInserted', function(e) 
 
     for(var i = 0; i < anchors.length; i++) {
         var anchor = anchors.item(i);
-        handleLink(anchor);
+        handleLink(null, anchor);
     }
 });
