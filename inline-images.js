@@ -88,6 +88,10 @@ function handleLink(e, anchor) {
         matches,
         href = anchor.href;
 
+    // Special-case handling for Twitter links
+    if (href.match(/t\.co/))
+        href = anchor.innerHTML;
+
     for (var i = 0; i < IMAGE_SERVICES.length; i++) {
         srv = IMAGE_SERVICES[i];
         matches = typeof srv.test === 'function' ?
