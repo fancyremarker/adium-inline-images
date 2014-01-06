@@ -50,13 +50,13 @@ var IMAGE_SERVICES = [
         }
     },
     {
-        test: new RegExp('^http://pic.twitter.com', 'i'),
+        test: new RegExp('pic.twitter.com', 'i'),
         link: function(href) {
             var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open('GET', href, false);
+            xmlHttp.open('GET', 'http://' + href, false);
             xmlHttp.send(null);
             var response = xmlHttp.responseText;
-            var linkRegex = /img src="([^"]+) alt="Embedded image permalink"/;
+            var linkRegex = /img src="([^"]+)" alt="Embedded image permalink"/;
             if (response.match(linkRegex))
                 return response.match(linkRegex)[1];
             else
