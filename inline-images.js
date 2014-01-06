@@ -36,13 +36,27 @@ var IMAGE_SERVICES = [
         }
     },
     {
-        test: new RegExp('^http://cl.ly/', 'i'),
+        test: new RegExp('^(http://cl.ly/|http://instagram.com/p/)', 'i'),
         link: function(href) {
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open('GET', href, false);
             xmlHttp.send(null);
             var response = xmlHttp.responseText;
             var linkRegex = /property="og:image" content="([^"]+)"/;
+            if (response.match(linkRegex))
+                return response.match(linkRegex)[1];
+            else
+                return null;
+        }
+    },
+    {
+        test: new RegExp('^http://pic.twitter.com', 'i'),
+        link: function(href) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open('GET', href, false);
+            xmlHttp.send(null);
+            var response = xmlHttp.responseText;
+            var linkRegex = /img src="([^"]+) alt="Embedded image permalink"/;
             if (response.match(linkRegex))
                 return response.match(linkRegex)[1];
             else
