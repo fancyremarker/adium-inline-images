@@ -48,20 +48,6 @@ var IMAGE_SERVICES = [
             else
                 return null;
         }
-    },
-    {
-        test: new RegExp('pic.twitter.com', 'i'),
-        link: function(href) {
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open('GET', 'http://' + href, false);
-            xmlHttp.send(null);
-            var response = xmlHttp.responseText;
-            var linkRegex = /img src="([^"]+)" alt="Embedded image permalink"/;
-            if (response.match(linkRegex))
-                return response.match(linkRegex)[1];
-            else
-                return null;
-        }
     }
 ];
 
