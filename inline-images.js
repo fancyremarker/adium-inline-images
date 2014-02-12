@@ -16,7 +16,7 @@ var IMAGE_SERVICES = [
                 return null;
         }
     },
-    {test: /\.(png|jpg|jpeg|gif)$/i},
+    {test: /^https?:.*\.(png|jpg|jpeg|gif)$/i},
     {test: new RegExp('^https://i.chzbgr.com/')},
     {test: new RegExp('^http://img-fotki.yandex.ru/get/')},
     {test: new RegExp('^http://img.leprosorium.com/')},
