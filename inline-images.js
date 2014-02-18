@@ -48,6 +48,20 @@ var IMAGE_SERVICES = [
             else
                 return null;
         }
+    },
+    {
+        test: new RegExp('https://twitter.com/.*/photo/1', 'i'),
+        link: function(href) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open('GET', href, false);
+            xmlHttp.send(null);
+            var response = xmlHttp.responseText;
+            var linkRegex = /img src="([^"]+)" alt="Embedded image permalink"/;
+            if (response.match(linkRegex))
+                return response.match(linkRegex)[1];
+            else
+                return null;
+        }
     }
 ];
 
@@ -89,8 +103,15 @@ function handleLink(e, anchor) {
         href = anchor.href;
 
     // Special-case handling for Twitter links
-    if (href.match(/t\.co/))
+    if (href.match(/t\.co/)) {
         href = anchor.innerHTML;
+
+        // Special case for pic.twitter.com
+        if (href.match(/pic\.twitter\.com/)) {
+            outlinks = anchor.parentNode.getElementsByTagName("a");
+            href = outlinks[outlinks.length-1].href + '/photo/1';
+        }
+    }
 
     for (var i = 0; i < IMAGE_SERVICES.length; i++) {
         srv = IMAGE_SERVICES[i];
