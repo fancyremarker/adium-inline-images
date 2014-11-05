@@ -3,7 +3,7 @@
 
 var IMAGE_SERVICES = [
     {
-        test: new RegExp('^https?://www.dropbox.com/.*(png|jpg|jpeg|gif)$', 'i'),
+        test: new RegExp('^https?://www.dropbox.com/.*(png|jpg|jpeg|gif).*$', 'i'),
         link: function(href) {
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open( 'GET', href, false );
